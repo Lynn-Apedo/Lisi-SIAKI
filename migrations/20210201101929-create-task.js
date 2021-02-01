@@ -1,27 +1,22 @@
 'use strict';
-
-const { DataTypes, UUID } = require("sequelize/types");
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('Tasks', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.INTEGER
       },
-      firstName: {
-        type: Sequelize.STRING
+      listId: {
+        defaultValue: null,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Lists",
+          key: "id",
+        },
       },
-      lastName: {
-        type: Sequelize.STRING
-      },
-      email: {
-        type: Sequelize.STRING
-      },
-      password: {
+      taskName: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -35,6 +30,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('Tasks');
   }
 };

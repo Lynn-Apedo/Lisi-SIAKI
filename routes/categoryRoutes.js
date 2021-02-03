@@ -29,7 +29,46 @@ router.post('/addcategory', authMiddleware.authenticateJWT, async (req, res) => 
 
     res.status(201).json({
         id: newCategory.id,
+        userId: newCategory.userId,
         category: newCategory.categoryName,
     })
+})
+
+router.get('/getcategories', async (req, res) => {
+    const categoriesFound = await categoryController.getAllCategories(req.params.userId)
+    if (categoryFound) {
+        res.status(200).json({
+            categoriesFound,
+        })
+    }
+})
+
+router.get('/category/:categoryId', async (req, res) => {
+    const categoryFound = await categoryController.getCategoryById(req.params.categoryId);
+
+    if (categoryFound) {
+        res.status(200).json({
+            categoryFound,
+        })
+    }
+})
+
+router.patch('/editcategory/:categoryId',authMiddleware.authenticateJWT, async (req, res) => {
+    const data = req.body;
+    const categoryUpdate = await categoryController.updateCategoryById(
+        req.params.categoryId,
+        data
+    );
+    res.status(200).json({ Category: categoryUpdate });
+})
+
+router.delete('/deletecategory/:categoryId', async (req, res) => {
+    const categoryFound = await categoryController.deleteCategoryById(req.params.categoryId)
+    
+    if (categoryFound) {
+        res.status(200).json({
+            message: 'Cette catégorie a bien été supprimé.'
+        })
+    }
 })
 module.exports = router;

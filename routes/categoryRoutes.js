@@ -16,6 +16,7 @@ router.get("/test", (req, res) => {
 
 router.post('/addcategory', authMiddleware.authenticateJWT, async (req, res) => {
     const { categoryName } = req.body;
+    // console.log("🚀 ~ file: categoryRoutes.js ~ line 19 ~ router.post ~ categoryName", categoryName)
 
     if (categoryName === null || categoryName === undefined || categoryName === ''){
         console.log('pb avec le champ categorie')
@@ -26,6 +27,7 @@ router.post('/addcategory', authMiddleware.authenticateJWT, async (req, res) => 
     }
 
     const newCategory = await categoryController.addCategory(req.body, req.user.userID);
+    console.log("🚀 ~ file: categoryRoutes.js ~ line 30 ~ router.post ~ newCategory", newCategory)
 
     res.status(201).json({
         id: newCategory.id,
@@ -36,7 +38,7 @@ router.post('/addcategory', authMiddleware.authenticateJWT, async (req, res) => 
 
 router.get('/getcategories', async (req, res) => {
     const categoriesFound = await categoryController.getAllCategories(req.params.userId)
-    if (categoryFound) {
+    if (categoriesFound) {
         res.status(200).json({
             categoriesFound,
         })
@@ -47,6 +49,18 @@ router.get('/category/:categoryId', async (req, res) => {
     const categoryFound = await categoryController.getCategoryById(req.params.categoryId);
 
     if (categoryFound) {
+        res.status(200).json({
+            categoryFound,
+        })
+    }
+})
+
+router.get('/categories',authMiddleware.authenticateJWT, async (req, res) => {
+    const categoryFound = await categoryController.getAllCategoriesByUserId(req.user.userID);
+    console.log("🚀 ~ file: categoryRoutes.js ~ line 58 ~ router.get ~ ***categoryFound", categoryFound)
+
+    if (categoryFound) {
+    console.log("🚀 ~ file: categoryRoutes.js ~ line 61 ~ router.get ~ ===> req.user.userID", req.user.userID)
         res.status(200).json({
             categoryFound,
         })

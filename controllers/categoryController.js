@@ -22,7 +22,40 @@ module.exports = {
         })
     }, 
     getCategoryById: (categoryId) => {
-        return Category.findByPk(categoryId)
+        return Category.findByPk(categoryId, {
+            include: [
+                {
+                    model: List, 
+                    attributes: [
+                        'id', 
+                        'userId',    
+                        'categoryId',
+                        'listName',
+                        'subcategoryName',
+                    ],
+                },
+            ]
+        })
+    },
+    getAllCategoriesByUserId: (userId) => {
+        return Category.findAll({
+            // include: [
+            //     {
+            //         model: User,
+            //         attributes: [
+            //             'id'
+            //         ]
+            //     }
+            // ], 
+            order: [['id', 'DESC']],
+            raw: true,
+            attributes: [
+                'id',
+                'userId',
+                'categoryName',
+            ],
+            where: { userId : userId},
+        })
     },
     updateCategoryById: async (id, data) => {
         const categoryUpdate = await Category.update(data, { where: { id } });

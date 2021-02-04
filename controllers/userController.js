@@ -46,15 +46,15 @@ module.exports = {
                 "categoryName",
               ],
             },
-            // {
-            //     model: List,
-            //     attributes: [
-            //       "id",
-            //       "categoryId",
-            //       "listName",
-            //       "subcategoryName",
-            //     ],
-            //   },
+            {
+              model: List,
+              attributes: [
+                "id",
+                "categoryId",
+                "listName",
+                "subcategoryName",
+              ],
+            },
           ],
         }
         );

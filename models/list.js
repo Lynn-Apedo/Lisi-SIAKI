@@ -15,12 +15,20 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey: "categoryId",
         }
       );
+      this.belongsTo(
+        models.User,{
+          foreignKey: "userId",
+        }
+      );
       this.hasMany(models.Task, {
         foreignKey: "listId"
-      })
+      });
+      
     }
   };
   List.init({
+    userId: DataTypes.INTEGER,
+    categoryId: DataTypes.INTEGER,
     listName: DataTypes.STRING,
     subcategoryName: DataTypes.STRING
   }, {
